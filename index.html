@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Khaen Inay — Personal Archive</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg: #0a0a0a;
+    --text: #f2f0e9;
+    --muted: #858585;
+    --line: #292929;
+    --accent: #d9ff3f;
+    --accent2: #ff5c35;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Space Grotesk", sans-serif;
+    overflow-x: hidden;
+}
+
+/* CURSOR GLOW */
+
+.cursor {
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(
+        circle,
+        rgba(217,255,63,.08),
+        transparent 65%
+    );
+    transform: translate(-50%, -50%);
+    z-index: 0;
+}
+
+/* NOISE */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .035;
+    z-index: 999;
+    background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+}
+
+/* NAV */
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 75px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 5vw;
+
+    border-bottom: 1px solid var(--line);
+    background: rgba(10,10,10,.75);
+    backdrop-filter: blur(15px);
+
+    z-index: 100;
+}
+
+.logo {
+    font-family: "DM Mono", monospace;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.status {
+    font-family: "DM Mono", monospace;
+    font-size: 10px;
+    color: #777;
+}
+
+.status::before {
+    content: "●";
+    color: var(--accent);
+    margin-right: 7px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+nav a:hover {
+    color: var(--accent);
+}
+
+/* HERO */
+
+.hero {
+    min-height: 100vh;
+    padding: 150px 5vw 80px;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hero-top {
+    display: flex;
+    justify-content: space-between;
+
+    font-family: "DM Mono", monospace;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.hero-title {
+    margin-top: 12vh;
+
+    font-size: clamp(70px, 14vw, 190px);
+    line-height: .78;
+    letter-spacing: -8px;
+    font-weight: 600;
+}
+
+.hero-title .outline {
+    color: transparent;
+    -webkit-text-stroke: 1px #777;
+}
+
+.hero-title .lime {
+    color: var(--accent);
+}
+
+.hero-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+
+    margin-top: 90px;
+}
+
+.hero-bottom div {
+    border-top: 1px solid var(--line);
+    padding-top: 15px;
+}
+
+.label {
+    font-family: "DM Mono", monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.hero-bottom p {
+    font-size: 14px;
+    max-width: 300px;
+}
+
+/* MARQUEE */
+
+.marquee {
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+
+    padding: 18px 0;
+    white-space: nowrap;
+}
+
+.marquee-track {
+    display: inline-block;
+    animation: move 20s linear infinite;
+}
+
+.marquee span {
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-right: 60px;
+}
+
+.marquee .dot {
+    color: var(--accent);
+}
+
+@keyframes move {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* SECTIONS */
+
+section {
+    padding: 140px 5vw;
+    position: relative;
+}
+
+.section-number {
+    font-family: "DM Mono", monospace;
+    color: var(--accent);
+    font-size: 11px;
+    margin-bottom: 30px;
+}
+
+.section-heading {
+    font-size: clamp(45px, 8vw, 110px);
+    line-height: .9;
+    letter-spacing: -5px;
+    max-width: 900px;
+}
+
+/* ABOUT */
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 8vw;
+
+    margin-top: 80px;
+}
+
+.about-left {
+    font-family: "DM Mono", monospace;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+.about-right {
+    font-size: clamp(24px, 3vw, 42px);
+    line-height: 1.15;
+    letter-spacing: -1px;
+}
+
+.about-right strong {
+    color: var(--accent);
+    font-weight: 500;
+}
+
+/* IDENTITY */
+
+.identity {
+    border-top: 1px solid var(--line);
+}
+
+.identity-grid {
+    margin-top: 70px;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.identity-item {
+    min-height: 190px;
+    padding: 25px;
+
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+
+    transition: .4s;
+}
+
+.identity-item:hover {
+    background: var(--accent);
+    color: black;
+}
+
+.identity-item:hover .small {
+    color: #333;
+}
+
+.identity-item h3 {
+    font-size: 25px;
+    margin-top: 40px;
+}
+
+.small {
+    font-family: "DM Mono", monospace;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* SKILLS */
+
+.skills-list {
+    margin-top: 80px;
+    border-top: 1px solid var(--line);
+}
+
+.skill-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 180px;
+
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+
+    align-items: center;
+}
+
+.skill-row:hover {
+    color: var(--accent);
+}
+
+.skill-number {
+    font-family: "DM Mono", monospace;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.skill-name {
+    font-size: clamp(25px, 4vw, 55px);
+    letter-spacing: -2px;
+}
+
+.skill-type {
+    text-align: right;
+    font-family: "DM Mono", monospace;
+    font-size: 10px;
+    color: var(--muted);
+}
+
+/* PROJECTS */
+
+.projects {
+    margin-top: 80px;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.project {
+    min-height: 430px;
+    padding: 30px;
+
+    position: relative;
+    overflow: hidden;
+
+    background: #111;
+    border: 1px solid var(--line);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    transition: .4s;
+}
+
+.project:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent);
+}
+
+.project:nth-child(2) {
+    margin-top: 100px;
+}
+
+.project:nth-child(3) {
+    margin-top: -50px;
+}
+
+.project-number {
+    font-family: "DM Mono", monospace;
+    color: var(--accent);
+    font-size: 11px;
+}
+
+.project h3 {
+    font-size: clamp(35px, 5vw, 65px);
+    line-height: .9;
+    letter-spacing: -3px;
+}
+
+.project p {
+    max-width: 400px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.project-arrow {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+
+    font-size: 30px;
+    color: var(--accent);
+}
+
+/* GOAL */
+
+.goal {
+    min-height: 80vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            120deg,
+            #0a0a0a 20%,
+            #151a0a 100%
+        );
+}
+
+.goal-text {
+    font-size: clamp(50px, 9vw, 130px);
+    line-height: .85;
+    letter-spacing: -6px;
+    max-width: 1200px;
+}
+
+.goal-text span {
+    color: var(--accent);
+}
+
+/* CONTACT */
+
+.contact {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contact-email {
+    margin-top: 70px;
+
+    font-size: clamp(30px, 6vw, 80px);
+    color: white;
+    text-decoration: none;
+
+    border-bottom: 2px solid var(--accent);
+    width: fit-content;
+}
+
+.contact-email:hover {
+    color: var(--accent);
+}
+
+.contact-meta {
+    margin-top: 60px;
+
+    display: flex;
+    gap: 40px;
+
+    font-family: "DM Mono", monospace;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* FOOTER */
+
+footer {
+    padding: 25px 5vw;
+
+    display: flex;
+    justify-content: space-between;
+
+    border-top: 1px solid var(--line);
+
+    font-family: "DM Mono", monospace;
+    font-size: 10px;
+    color: var(--muted);
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 800px) {
+
+    nav {
+        height: 65px;
+    }
+
+    .status {
+        display: none;
+    }
+
+    nav a {
+        font-size: 10px;
+    }
+
+    .hero {
+        padding-top: 120px;
+    }
+
+    .hero-title {
+        letter-spacing: -4px;
+    }
+
+    .hero-bottom {
+        grid-template-columns: 1fr;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .identity-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .projects {
+        grid-template-columns: 1fr;
+    }
+
+    .project:nth-child(2),
+    .project:nth-child(3) {
+        margin-top: 0;
+    }
+
+    .skill-row {
+        grid-template-columns: 45px 1fr;
+    }
+
+    .skill-type {
+        display: none;
+    }
+
+    .contact-meta {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+@media(max-width: 500px) {
+
+    .identity-grid {
+        grid-template-columns: 1fr;
+    }
+
+    nav {
+        padding: 0 20px;
+    }
+
+    nav .nav-right a {
+        display: none;
+    }
+
+    section {
+        padding: 100px 20px;
+    }
+
+    .hero {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .hero-title {
+        font-size: 65px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="cursor"></div>
+
+
+<!-- NAVIGATION -->
+
+<nav>
+
+    <div class="logo">
+        KHAEN<span>/</span>INAY
+    </div>
+
+    <div class="nav-right">
+
+        <div class="status">
+            AVAILABLE TO LEARN
+        </div>
+
+        <a href="#about">About</a>
+        <a href="#projects">Work</a>
+        <a href="#contact">Contact</a>
+
+    </div>
+
+</nav>
+
+
+<!-- HERO -->
+
+<header class="hero" id="home">
+
+    <div class="hero-top">
+
+        <span>STUDENT / 2026</span>
+
+        <span>ALLACAPAN, PHILIPPINES</span>
+
+    </div>
+
+
+    <div>
+
+        <h1 class="hero-title">
+
+            KHAEN<br>
+
+            <span class="outline">INAY</span><br>
+
+            <span class="lime">ARCHIVE.</span>
+
+        </h1>
+
+    </div>
+
+
+    <div class="hero-bottom">
+
+        <div>
+
+            <div class="label">01 / Identity</div>
+
+            <p>
+                Grade 11 student,
+                learner, creator and future professional.
+            </p>
+
+        </div>
+
+        <div>
+
+            <div class="label">02 / Current focus</div>
+
+            <p>
+                Education, creativity,
+                personal development and discovering new possibilities.
+            </p>
+
+        </div>
+
+        <div>
+
+            <div class="label">03 / Philosophy</div>
+
+            <p>
+                Learn something.
+                Build something.
+                Become something.
+            </p>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- MARQUEE -->
+
+<div class="marquee">
+
+    <div class="marquee-track">
+
+        <span>LEARN <b class="dot">✦</b></span>
+        <span>CREATE <b class="dot">✦</b></span>
+        <span>EXPLORE <b class="dot">✦</b></span>
+        <span>IMPROVE <b class="dot">✦</b></span>
+        <span>LEARN <b class="dot">✦</b></span>
+        <span>CREATE <b class="dot">✦</b></span>
+        <span>EXPLORE <b class="dot">✦</b></span>
+        <span>IMPROVE <b class="dot">✦</b></span>
+
+    </div>
+
+</div>
+
+
+<!-- ABOUT -->
+
+<section id="about">
+
+    <div class="section-number">
+        01 — ABOUT
+    </div>
+
+    <h2 class="section-heading">
+        A student with<br>
+        room to <span style="color:#d9ff3f;">grow.</span>
+    </h2>
+
+
+    <div class="about-grid">
+
+        <div class="about-left">
+
+            NAME<br>
+            KHAEN INAY<br><br>
+
+            AGE<br>
+            16<br><br>
+
+            LEVEL<br>
+            GRADE 11<br><br>
+
+            LOCATION<br>
+            ALLACAPAN, CAGAYAN
+
+        </div>
+
+
+        <div class="about-right">
+
+            Hello. I'm <strong>Khaen</strong>.
+
+            I'm currently a Grade 11 student
+            learning more about myself,
+            developing my skills and
+            preparing for the future.
+
+            <br><br>
+
+            I believe progress doesn't have
+            to happen all at once.
+            Small improvements,
+            consistent effort and curiosity
+            can create something meaningful.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- IDENTITY -->
+
+<section class="identity">
+
+    <div class="section-number">
+        02 — IDENTITY
+    </div>
+
+    <h2 class="section-heading">
+        Things that<br>
+        <span style="color:#d9ff3f;">define me.</span>
+    </h2>
+
+
+    <div class="identity-grid">
+
+        <div class="identity-item">
+
+            <div class="small">01</div>
+
+            <h3>Curious</h3>
+
+        </div>
+
+
+        <div class="identity-item">
+
+            <div class="small">02</div>
+
+            <h3>Creative</h3>
+
+        </div>
+
+
+        <div class="identity-item">
+
+            <div class="small">03</div>
+
+            <h3>Respectful</h3>
+
+        </div>
+
+
+        <div class="identity-item">
+
+            <div class="small">04</div>
+
+            <h3>Hardworking</h3>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SKILLS -->
+
+<section id="skills">
+
+    <div class="section-number">
+        03 — SKILLS
+    </div>
+
+    <h2 class="section-heading">
+        Currently<br>
+        <span style="color:#d9ff3f;">developing.</span>
+    </h2>
+
+
+    <div class="skills-list">
+
+        <div class="skill-row">
+
+            <div class="skill-number">01</div>
+
+            <div class="skill-name">
+                Communication
+            </div>
+
+            <div class="skill-type">
+                SOCIAL
+            </div>
+
+        </div>
+
+
+        <div class="skill-row">
+
+            <div class="skill-number">02</div>
+
+            <div class="skill-name">
+                Teamwork
+            </div>
+
+            <div class="skill-type">
+                COLLABORATION
+            </div>
+
+        </div>
+
+
+        <div class="skill-row">
+
+            <div class="skill-number">03</div>
+
+            <div class="skill-name">
+                Creativity
+            </div>
+
+            <div class="skill-type">
+                CREATIVE
+            </div>
+
+        </div>
+
+
+        <div class="skill-row">
+
+            <div class="skill-number">04</div>
+
+            <div class="skill-name">
+                Problem Solving
+            </div>
+
+            <div class="skill-type">
+                THINKING
+            </div>
+
+        </div>
+
+
+        <div class="skill-row">
+
+            <div class="skill-number">05</div>
+
+            <div class="skill-name">
+                Time Management
+            </div>
+
+            <div class="skill-type">
+                PRODUCTIVITY
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PROJECTS -->
+
+<section id="projects">
+
+    <div class="section-number">
+        04 — PROJECTS
+    </div>
+
+    <h2 class="section-heading">
+        Selected<br>
+        <span style="color:#d9ff3f;">work.</span>
+    </h2>
+
+
+    <div class="projects">
+
+
+        <article class="project">
+
+            <div>
+
+                <div class="project-number">
+                    PROJECT / 001
+                </div>
+
+                <span class="project-arrow">↗</span>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    SCHOOL<br>
+                    PROJECT
+                </h3>
+
+                <p>
+                    Add one of your favorite school
+                    projects here. Describe what you
+                    created and what you learned.
+                </p>
+
+            </div>
+
+        </article>
+
+
+        <article class="project">
+
+            <div>
+
+                <div class="project-number">
+                    PROJECT / 002
+                </div>
+
+                <span class="project-arrow">↗</span>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    CREATIVE<br>
+                    WORK
+                </h3>
+
+                <p>
+                    Add artwork, presentation,
+                    website, research or another
+                    creative activity here.
+                </p>
+
+            </div>
+
+        </article>
+
+
+        <article class="project">
+
+            <div>
+
+                <div class="project-number">
+                    PROJECT / 003
+                </div>
+
+                <span class="project-arrow">↗</span>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    FUTURE<br>
+                    IDEA
+                </h3>
+
+                <p>
+                    Describe something you want
+                    to build, learn or accomplish
+                    in the future.
+                </p>
+
+            </div>
+
+        </article>
+
+
+        <article class="project">
+
+            <div>
+
+                <div class="project-number">
+                    PROJECT / 004
+                </div>
+
+                <span class="project-arrow">↗</span>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    NEXT<br>
+                    CHAPTER
+                </h3>
+
+                <p>
+                    This space represents the
+                    projects and experiences
+                    still waiting to happen.
+                </p>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- GOALS -->
+
+<section class="goal">
+
+    <div class="section-number">
+        05 — FUTURE
+    </div>
+
+
+    <div class="goal-text">
+
+        I'M NOT<br>
+        FINISHED.<br>
+
+        I'M JUST<br>
+
+        <span>GETTING</span><br>
+
+        STARTED.
+
+    </div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section class="contact" id="contact">
+
+    <div class="section-number">
+        06 — CONTACT
+    </div>
+
+    <h2 class="section-heading">
+        Let's stay<br>
+        <span style="color:#d9ff3f;">connected.</span>
+    </h2>
+
+
+    <a
+        class="contact-email"
+        href="mailto:your-email@example.com"
+    >
+        your-email@example.com ↗
+    </a>
+
+
+    <div class="contact-meta">
+
+        <span>© 2026 KHAEN INAY</span>
+
+        <span>GRADE 11 STUDENT</span>
+
+        <span>ALLACAPAN, CAGAYAN</span>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <span>KHAEN / INAY</span>
+
+    <span>PERSONAL ARCHIVE — 2026</span>
+
+</footer>
+
+
+<script>
+
+/* CURSOR GLOW */
+
+const cursor = document.querySelector(".cursor");
+
+document.addEventListener("mousemove", (e) => {
+
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top = e.clientY + "px";
+
+});
+
+
+/* SIMPLE SCROLL REVEAL */
+
+const elements = document.querySelectorAll(
+    ".section-heading, .about-grid, .identity-item, .skill-row, .project"
+);
+
+const observer = new IntersectionObserver(
+    (entries) => {
+
+        entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+
+            }
+
+        });
+
+    },
+    {
+        threshold: 0.1
+    }
+);
+
+
+elements.forEach(element => {
+
+    element.style.opacity = "0";
+    element.style.transform = "translateY(35px)";
+    element.style.transition = "opacity .8s ease, transform .8s ease";
+
+    observer.observe(element);
+
+});
+
+</script>
+
+</body>
+</html>
